@@ -143,23 +143,42 @@ body {
 #container {
     float: right;
     margin-top: 100px;
-    margin-right: 100px;
+    margin-right: 50px;
     text-align: center;
 }
 
 #weather-container {
-  position: absolute;
-  top: 1200px;
-  right: 100px;
-  text-align: center;
-  font-size: 800%;
-  width: 300px;
-  align-items: center;
+    text-align: center;
+    margin-top: 100px;
+    margin-left: 50px;
+    width: 400px;
+}
+
+#weather-temperature {
+    float:right;
+    font-size: 800%;
+    margin: 10px auto;
+    width: 50%;
+}
+
+#weather-container-inner {
+    margin: 0 auto;
+}
+
+#weather-icon-wrapper {
+    float: right;
+    width: 50%;
+    margin: 0 auto;
 }
 
 #weather-icon {
-    width: 200px;
-    height: 200px;
+  margin: 0 auto;
+}
+
+#weather-summary {
+  float:right;
+  width: 100%;
+  font-size: 120%;
 }
 
 </style>
@@ -170,12 +189,18 @@ body {
 <div id="container">
     <div id="date"></div>
     <div id="clock"></div>
+    <div id="weather-container">
+        <div id="weather-container-inner">
+            <div id="weather-icon-wrapper">
+                <div id="weather-icon"></div>
+            </div>
+            <div id="weather-temperature"></div>
+        </div>
+        <div id="weather-summary"></div>
+    </div>
 </div>
 
-<div id="weather-container">
-    <div id="weather-temperature"></div>
-    <div id="weather-icon"></div>
-</div>
+
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -202,6 +227,8 @@ body {
 
                   //set current temperature
                   $("#weather-temperature").html(Math.round(forecast.currently.apparentTemperature) + "&deg;");
+
+                  var i = $("#weather-temperature").height();
 
                   //set current weather picture
                   switch(forecast.currently.icon) {
@@ -233,8 +260,12 @@ body {
                           $("#weather-icon").html("<img src='partly-cloudy-night.svg'>");
                           break;
                       default:
-
                   };
+
+                  $("#weather-icon").height(i);
+                  $("#weather-icon").width(i);
+
+                  $("#weather-summary").html(forecast.hourly.summary);
 
                   setTimeout(getWeather, 900000);
               },
