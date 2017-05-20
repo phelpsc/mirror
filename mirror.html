@@ -186,59 +186,66 @@ body {
         var request = APP_URL + API_KEY + "/" + latitude + "," + longitude;
         console.log(request);
 
-        $.ajax({
-            type: 'GET',
-            url: request,
-            contentType: 'text/json',
-            xhrFields: {
-                withCredentials: false
-            },
-            headers: {
-              'Access-Control-Allow-Origin':'*'
-            },
-            success: function(forecast) {
-                console.log(forecast);
+        function getWeather() {
+          $.ajax({
+              type: 'GET',
+              url: request,
+              contentType: 'text/json',
+              xhrFields: {
+                  withCredentials: false
+              },
+              headers: {
+                'Access-Control-Allow-Origin':'*'
+              },
+              success: function(forecast) {
+                  console.log(forecast);
 
-                //set current temperature
-                $("#weather-temperature").html(Math.round(forecast.currently.apparentTemperature) + "&deg;")
+                  //set current temperature
+                  $("#weather-temperature").html(Math.round(forecast.currently.apparentTemperature) + "&deg;");
 
-                //set current weather picture
-                console.log(forecast.currently.icon);
+                  //set current weather picture
+                  switch(forecast.currently.icon) {
+                      case "clear-day":
+                          $("#weather-icon").html("<img src='clear-day.svg'>");
+                          break;
+                      case "clear-night":
+                          $("#weather-icon").html("<img src='clear-night.svg'>");
+                          break;
+                      case "rain":
+                          $("#weather-icon").html("<img src='rain.svg'>");
+                          break;
+                      case "snow":
+                          $("#weather-icon").html("<img src='snow.svg'>");
+                          break;
+                      case "thunderstorm":
+                          $("#weather-icon").html("<img src='thunderstorm.svg'>");
+                          break;
+                      case "wind":
+                          $("#weather-icon").html("<img src='wind.svg'>");
+                          break;
+                      case "cloudy":
+                          $("#weather-icon").html("<img src='cloudy.svg'>");
+                          break;
+                      case "partly-cloudy-day":
+                          $("#weather-icon").html("<img src='partly-cloudy-day.svg'>");
+                          break;
+                      case "partly-cloudy-night":
+                          $("#weather-icon").html("<img src='partly-cloudy-night.svg'>");
+                          break;
+                      default:
 
-                switch(forecast.currently.icon) {
-                    case "clear-day":
-                        $("#weather-icon").html("<img src='clear-day.svg'>");
-                        break;
-                    case "clear-night":
-                        $("#weather-icon").html("<img src='clear-night.svg'>");
-                        break;
-                    case "rain":
-                        $("#weather-icon").html("<img src='rain.svg'>");
-                        break;
-                    case "snow":
-                        $("#weather-icon").html("<img src='snow.svg'>");
-                        break;
-                    case "thunderstorm":
-                        $("#weather-icon").html("<img src='thunderstorm.svg'>");
-                        break;
-                    case "wind":
-                        $("#weather-icon").html("<img src='wind.svg'>");
-                        break;
-                    case "cloudy":
-                        $("#weather-icon").html("<img src='cloudy.svg'>");
-                        break;
-                    case "partly-cloudy-day":
-                        $("#weather-icon").html("<img src='partly-cloudy-day.svg'>");
-                        break;
-                    case "partly-cloudy-night":
-                        $("#weather-icon").html("<img src='partly-cloudy-night.svg'>");
-                        break;
-                    default:
+                  };
 
-                };
-            },
-            error: function() {}
-        });
+                  setTimeout(getWeather, 900000);
+              },
+              error: function() {
+                  $("#weather-temperature").html("Error Loading Weather");
+                  setTimeout(getWeather, 900000);
+              }
+          });
+        };
+
+        getWeather();
 
     });
 </script>
