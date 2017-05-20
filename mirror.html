@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript" src="jquery-3.2.1.min.js"></script>
+
+<script>
+function init() {
+    startTime();
+}
+
+function startTime() {
+
+    var today = new Date();
+    var h = today.getHours();
+    var m = today.getMinutes();
+    m = checkTime(m);
+    if (h == 0) {
+        document.getElementById('clock').innerHTML = 12 + ":" + m + "am";
+    } else if (h == 12) {
+        document.getElementById('clock').innerHTML = h + ":" + m + "pm";
+    } else if (h > 12) {
+        document.getElementById('clock').innerHTML = h-12 + ":" + m + "pm";
+    } else {
+        document.getElementById('clock').innerHTML = h + ":" + m + "am";
+    }
+
+    var weekday = "";
+    var month = "";
+    var year = today.getFullYear();
+    var dayOfMonth = today.getDate();
+    var extra = "";
+    switch(today.getDay()) {
+            case 0:
+                weekday = "Sunday";
+                break;
+            case 1:
+                weekday = "Monday";
+                break;
+            case 2:
+                weekday = "Tuesday";
+                break;
+            case 3:
+                weekday = "Wednesday";
+                break;
+            case 4:
+                weekday = "Thursday";
+                break;
+            case 5:
+                weekday = "Friday";
+                break;
+            case 6:
+                weekday = "Saturday";
+                break;
+            default:
+                weekday = "ErrorWeekday";
+        }
+
+        switch(today.getMonth()) {
+            case 0:
+                month = "January";
+                break;
+            case 1:
+                month = "February";
+                break;
+            case 2:
+                month = "March";
+                break;
+                case 3:
+            month = "April";
+            break;
+        case 4:
+            month = "May";
+            break;
+        case 5:
+            month = "June";
+            break;
+        case 6:
+            month = "July";
+            break;
+        case 7:
+            month = "August";
+            break;
+        case 8:
+            month = "September";
+            break;
+        case 9:
+            month = "October";
+            break;
+        case 10:
+            month = "November";
+            break;
+        case 11:
+            month = "December";
+            break;
+        default:
+            month = "ErrorMonth";
+    }
+
+    switch (dayOfMonth % 10) {
+        case 1:
+            extra = "st";
+            break;
+        case 2:
+        case 3:
+        extra = "rd";
+            break;
+        default:
+            extra = "th";
+    }
+
+    var dateString = weekday + ", " + month + " " + dayOfMonth + extra + ", " + year;
+    document.getElementById('date').innerHTML = dateString;
+
+    var t = setTimeout(startTime, 100);
+}
+
+function checkTime(i) {
+    if (i < 10) {i = "0" + i}; // add zero in front of numbers < 10
+    return i;
+}
+</script>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css?family=Josefin+Sans');
+
+body {
+    background-color: black;
+    color: white;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300;
+}
+
+#date {
+    font-size: 300%;
+}
+
+#clock {
+    font-size: 800%;
+}
+
+#container {
+    float: right;
+    margin-top: 100px;
+    margin-right: 100px;
+    text-align: center;
+}
+
+#weather-container {
+  position: absolute;
+  top: 1200px;
+  right: 100px;
+  text-align: center;
+  font-size: 800%;
+  width: 300px;
+  align-items: center;
+}
+
+#weather-icon {
+    width: 200px;
+    height: 200px;
+}
+
+</style>
+
+</head>
+
+<body onload="init()">
+<div id="container">
+    <div id="date"></div>
+    <div id="clock"></div>
+</div>
+
+<div id="weather-container">
+    <div id="weather-temperature"></div>
+    <div id="weather-icon"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var APP_URL = "https://api.darksky.net/forecast/";
+        var API_KEY = "19420307beccd898b11977b6cbfc19c4";
+        var latitude = "39.018290";
+        var longitude = "-77.073715";
+        var request = APP_URL + API_KEY + "/" + latitude + "," + longitude;
+        console.log(request);
+
+        $.ajax({
+            type: 'GET',
+            url: request,
+            contentType: 'text/json',
+            xhrFields: {
+                withCredentials: false
+            },
+            headers: {
+              'Access-Control-Allow-Origin':'*'
+            },
+            success: function(forecast) {
+                console.log(forecast);
+
+                //set current temperature
+                $("#weather-temperature").html(Math.round(forecast.currently.apparentTemperature) + "&deg;")
+
+                //set current weather picture
+                console.log(forecast.currently.icon);
+
+                switch(forecast.currently.icon) {
+                    case "clear-day":
+                        $("#weather-icon").html("<img src='clear-day.svg'>");
+                        break;
+                    case "clear-night":
+                        $("#weather-icon").html("<img src='clear-night.svg'>");
+                        break;
+                    case "rain":
+                        $("#weather-icon").html("<img src='rain.svg'>");
+                        break;
+                    case "snow":
+                        $("#weather-icon").html("<img src='snow.svg'>");
+                        break;
+                    case "thunderstorm":
+                        $("#weather-icon").html("<img src='thunderstorm.svg'>");
+                        break;
+                    case "wind":
+                        $("#weather-icon").html("<img src='wind.svg'>");
+                        break;
+                    case "cloudy":
+                        $("#weather-icon").html("<img src='cloudy.svg'>");
+                        break;
+                    case "partly-cloudy-day":
+                        $("#weather-icon").html("<img src='partly-cloudy-day.svg'>");
+                        break;
+                    case "partly-cloudy-night":
+                        $("#weather-icon").html("<img src='partly-cloudy-night.svg'>");
+                        break;
+                    default:
+
+                };
+            },
+            error: function() {}
+        });
+
+    });
+</script>
+
+</body>
+</html>
