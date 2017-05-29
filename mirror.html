@@ -154,11 +154,24 @@ body {
     width: 400px;
 }
 
-#weather-temperature {
+#weather-temperature-wrapper {
     float:right;
-    font-size: 800%;
     margin: 10px auto;
     width: 50%;
+}
+
+#weather-temperature {
+  font-size: 600%;
+  text-align: right;
+  margin-right: 10px;
+
+}
+
+#weather-high {
+    font-size: 100%;
+    margin-left: 0;
+    margin-right: 40px;
+    text-align: right;
 }
 
 #weather-container-inner {
@@ -179,6 +192,7 @@ body {
   float:right;
   width: 100%;
   font-size: 120%;
+  margin-top: 20px;
 }
 
 </style>
@@ -194,7 +208,11 @@ body {
             <div id="weather-icon-wrapper">
                 <div id="weather-icon"></div>
             </div>
-            <div id="weather-temperature"></div>
+            <div id="weather-temperature-wrapper">
+              <div id="weather-temperature"></div>
+              <div id="weather-high"></div>
+            </div>
+
         </div>
         <div id="weather-summary"></div>
     </div>
@@ -226,9 +244,12 @@ body {
                   console.log(forecast);
 
                   //set current temperature
-                  $("#weather-temperature").html(Math.round(forecast.currently.apparentTemperature) + "&deg;");
+                  var temperatureHTML = Math.round(forecast.currently.apparentTemperature) + "&deg;"
+                  var highTemperatureHTML = "High of " + Math.round(forecast.daily.data[0].apparentTemperatureMax) + "&deg;";
+                  $("#weather-temperature").html(temperatureHTML);
+                  $("#weather-high").html(highTemperatureHTML);
 
-                  var i = $("#weather-temperature").height();
+                  var i = $("#weather-temperature-wrapper").height();
 
                   //set current weather picture
                   switch(forecast.currently.icon) {
