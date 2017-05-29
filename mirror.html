@@ -140,12 +140,27 @@ body {
     font-size: 800%;
 }
 
-#container {
+.container-position-1 {
     float: right;
     margin-top: 100px;
     margin-right: 50px;
     text-align: center;
 }
+
+.container-position-2 {
+    float: left;
+    margin-top: 100px;
+    margin-left: 50px;
+    text-align: center;
+}
+
+.container-position-3 {
+    float: right;
+    margin-top: 1400px;
+    margin-right: 50px;
+    text-align: center;
+}
+
 
 #weather-container {
     text-align: center;
@@ -200,7 +215,7 @@ body {
 </head>
 
 <body onload="init()">
-<div id="container">
+<div id="container" class="container-position-1">
     <div id="date"></div>
     <div id="clock"></div>
     <div id="weather-container">
@@ -287,6 +302,9 @@ body {
                   $("#weather-icon").width(i);
 
                   $("#weather-summary").html(forecast.hourly.summary);
+
+                  var newPosition = "container-position-" + Math.floor(Math.random() * 3);
+                  $("#container").removeClass().addClass(newPosition)
 
                   setTimeout(getWeather, 900000);
               },
