@@ -112,6 +112,13 @@ function startTime() {
     var dateString = weekday + ", " + month + " " + dayOfMonth + extra + ", " + year;
     document.getElementById('date').innerHTML = dateString;
 
+    //Check for Alexandra's Birthday Message!
+    if (today.getMonth() == 9 && today.getDate() == 10) {
+      $("#message-of-the-day").show();
+    } else {
+      $("#message-of-the-day").hide();
+    }
+
     var t = setTimeout(startTime, 100);
 }
 
@@ -140,6 +147,10 @@ body {
     font-size: 800%;
 }
 
+#message-of-the-day {
+    font-size: 400%;
+}
+
 .container-position-1 {
     float: right;
     margin-top: 100px;
@@ -155,6 +166,13 @@ body {
 }
 
 .container-position-3 {
+    float: right;
+    margin-top: 1400px;
+    margin-right: 50px;
+    text-align: center;
+}
+
+.motd {
     float: right;
     margin-top: 1400px;
     margin-right: 50px;
@@ -232,6 +250,9 @@ body {
         <div id="weather-summary"></div>
     </div>
 </div>
+<div id="message-of-the-day" class="motd">
+  <img src="birthdaycake.png" height=63 width=87 />Happy Birthday Alexandra!<img src="birthdaycake.png" height=63 width=87 />
+</div>
 
 
 
@@ -303,8 +324,8 @@ body {
 
                   $("#weather-summary").html(forecast.hourly.summary);
 
-                  var newPosition = "container-position-" + Math.floor(Math.random() * 3);
-                  $("#container").removeClass().addClass(newPosition)
+                  var newPosition = "container-position-" + (Math.floor(Math.random() * 2) + 1);
+                  $("#container").removeClass().addClass(newPosition);
 
                   setTimeout(getWeather, 900000);
               },
